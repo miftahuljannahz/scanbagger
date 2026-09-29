@@ -110,7 +110,7 @@ def select_drug_type():
             "type": "result_popup",
             "status": "danger",
             "title": "🚫 TIDAK DIPERBOLEHKAN MASUK",
-            "message": "Pembawaan Narkotika **sama sekali tidak diperbolehkan** bagi penumpang/penerima.",
+            "message": "Pembawaan Narkotika **sama sekali tidak diperbolehkan** bagi penumpang.",
             "actions": AFTER_ACTION_OPTIONS
         })
     elif drug_type == 'psikotropika':
@@ -119,7 +119,7 @@ def select_drug_type():
             "message": "Untuk Psikotropika, batasan aturan:\n• **Hanya WNA atau wisatawan asing**\n• Berapapun jumlahnya **harus sesuai resep dokter** (maksimal 60 hari pengobatan)\n\nApakah Anda WNA/Wisatawan Asing & membawa resep dokter?",
             "options": [
                 {"id": "psiko_ya", "text": "Ya, WNA & Ada Resep Dokter"},
-                {"id": "psiko_tidak", "text": "Tidak Memenuhi Syarat"}
+                {"id": "psiko_tidak", "text": "Tidak Memiliki Resep"}
             ]
         })
     elif drug_type in LIMITS:
