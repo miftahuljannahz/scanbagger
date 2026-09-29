@@ -37,6 +37,46 @@ function parseMarkdown(text) {
     return result;
 }
 
+// Fungsi penanganan awal pertanyaan Konsultasi (Ya / Tidak)
+function handleConsultation(isYes) {
+    const optionsGroup = document.getElementById('consultationOptions');
+    if (optionsGroup) {
+        optionsGroup.remove();
+    }
+
+    if (isYes) {
+        appendUserMessage("Ya");
+        appendBotMessage("Selamat datang di layanan pengecekan Batasan Jumlah Barang Bawaan Anda.");
+
+        // Panggil endpoint main_menu backend jika ada, atau tampilkan menu lokal
+        fetch('/api/main_menu')
+            .then(res => res.json())
+            .then(data => {
+                appendMainMenu(data.message, data.options);
+            })
+            .catch(() => {
+                // Fallback lokal jika backend belum merespons menu utama
+                showDefaultMainMenu();
+            });
+    } else {
+        appendUserMessage("Tidak");
+        appendBotMessage("Semoga perjalanan Anda menyenangkan! 👋");
+    }
+}
+
+// Menu utama lokal jika fetch main_menu memerlukan visualisasi langsung
+function showDefaultMainMenu() {
+    const defaultOptions = [
+        { id: 'obat', text: 'Obat', icon: '💊' },
+        { id: 'obat_tradisional', text: 'Obat Tradisional', icon: '🌿' },
+        { id: 'suplemen', text: 'Suplemen Kesehatan', icon: '🧪' },
+        { id: 'kosmetik', text: 'Kosmetika', icon: '💄' },
+        { id: 'pkmk', text: 'Pangan Olahan Medis Khusus (PKMK)', icon: '🏥' },
+        { id: 'makanan', text: 'Pangan Olahan Lain (Makanan)', icon: '🍱', note: 'kecuali minuman beralkohol' }
+    ];
+    appendMainMenu("Kamu membawa apa?", defaultOptions);
+}
+
 function appendUserMessage(text) {
     const msgDiv = document.createElement('div');
     msgDiv.className = 'message user-message';
@@ -237,6 +277,22 @@ function closeModal() {
     }
 }
 
+// Fungsi Membuka Modal FAQ
+function openFaqModal() {
+    const faqModal = document.getElementById('faqModal');
+    if (faqModal) {
+        faqModal.style.display = 'flex';
+    }
+}
+
+// Fungsi Menutup Modal FAQ
+function closeFaqModal() {
+    const faqModal = document.getElementById('faqModal');
+    if (faqModal) {
+        faqModal.style.display = 'none';
+    }
+}
+
 function appendAfterActionOptions(actions) {
     const msgDiv = document.createElement('div');
     msgDiv.className = 'message bot-message';
@@ -263,6 +319,9 @@ function handleAfterAction(actionId, text) {
             .then(res => res.json())
             .then(data => {
                 appendMainMenu(data.message, data.options);
+            })
+            .catch(() => {
+                showDefaultMainMenu();
             });
     } else if (actionId === 'finish') {
         appendBotMessage("Terima kasih telah menggunakan layanan pengecekan batasan barang bawaan. Semoga perjalanan Anda menyenangkan! 👋");

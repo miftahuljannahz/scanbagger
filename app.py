@@ -40,10 +40,10 @@ LIMITS = {
 MAIN_OPTIONS = [
     {"id": "obat", "icon": "💊", "text": "Obat"},
     {"id": "obat_tradisional", "icon": "🌿", "text": "Obat Tradisional"},
-    {"id": "suplemen", "icon": "🧪", "text": "Suplemen Kesehatan"},
+    {"id": "suplemen", "icon": "💪🏻", "text": "Suplemen Kesehatan"},
     {"id": "kosmetik", "icon": "💄", "text": "Kosmetika"},
     {"id": "pkmk", "icon": "🏥", "text": "Pangan Olahan Medis Khusus (PKMK)"},
-    {"id": "makanan", "icon": "🍱", "text": "Pangan Olahan Lain (Makanan)", "note": "kecuali minuman beralkohol"}
+    {"id": "makanan", "icon": "🧃", "text": "Pangan Olahan Lain", "note": "kecuali minuman beralkohol"}
 ]
 
 AFTER_ACTION_OPTIONS = [
@@ -205,16 +205,16 @@ def validate_input():
                     "title": "⚠️ MELEBIHI BATAS TANPA RESEP",
                     "message": f"Anda membawa **{int(qty) if qty.is_integer() else qty} {unit}** (Batas tanpa resep dokter: {limit} {unit}).\n\n" +
                                f"• Jika **membawa resep dokter**: Dipersilahkan masuk (maksimal 90 hari pengobatan).\n" +
-                               f"• Jika **tanpa resep dokter**: Silakan **kurangi muatan sebanyak {int(excess) if excess.is_integer() else excess} {unit}** (hanya {limit} {unit} yang diperbolehkan).",
+                               f"• Jika **tanpa resep dokter**: Silakan **kurangi Jumlah sebanyak {int(excess) if excess.is_integer() else excess} {unit}** (hanya {limit} {unit} yang diperbolehkan).",
                     "actions": AFTER_ACTION_OPTIONS
                 })
             else:
                 return jsonify({
                     "type": "result_popup",
                     "status": "warning",
-                    "title": "⚠️ PERINGATAN / KURANGI MUATAN",
+                    "title": "⚠️ PERINGATAN / KURANGI JUMLAH",
                     "message": f"Jumlah **{int(qty) if qty.is_integer() else qty} {unit}** melebihi batas maksimal pembawaan ({limit} {unit} per penumpang).\n\n" +
-                               f"👉 Silakan kurangi muatan Anda sebanyak **{int(excess) if excess.is_integer() else excess} {unit}** agar tidak melebihi batasan {limit} {unit}.",
+                               f"👉 Silakan kurangi Jumlah Anda sebanyak **{int(excess) if excess.is_integer() else excess} {unit}** agar tidak melebihi batasan {limit} {unit}.",
                     "excess": excess,
                     "actions": AFTER_ACTION_OPTIONS
                 })

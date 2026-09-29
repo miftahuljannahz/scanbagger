@@ -7,6 +7,47 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <style>
+        /* Styling khusus untuk widget statistik pengunjung agar terbaca di background terang */
+        .visitor-stat-box {
+            margin-top: 25px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .visitor-stat-box h4 {
+            margin: 0 0 12px 0;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1e293b;
+        }
+
+        .counter-wrapper {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            min-height: 40px;
+        }
+
+        .counter-wrapper a {
+            font-size: 0;
+            line-height: 0;
+            display: inline-block;
+        }
+
+        .counter-wrapper img {
+            display: inline-block !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -50,8 +91,80 @@
             <div class="info-footer">
                 <p><i class="fa-solid fa-circle-info"></i> Pastikan membawa resep dokter resmi untuk obat sediaan khusus/melebihi batas harian.</p>
             </div>
+
+            <!-- SEKSI STATISTIK PENGUNJUNG -->
+   
+                <div class="counter-wrapper">
+                    <a href='https://www.versicherungen.at/pferde-krankenversicherung/'>Pferd Krankenversicherung</a> 
+                    <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=ac37811e20c406fef677d6386f836843ff73409b'></script>
+                    <script type="text/javascript" src="https://freevisitorcounters.com/en/home/counter/1653974/t/6"></script>
+                </div>
+            </div>
+        </div>
+<!-- FLOATING BUTTONS (Pojok Kanan Bawah) -->
+    <div class="floating-container">
+        <!-- Tombol FAQ -->
+        <button class="float-btn faq-btn" onclick="openFaqModal()" title="Pertanyaan Umum (FAQ)">
+            <i class="fa-solid fa-circle-question"></i>
+        </button>
+
+        <!-- Tombol WhatsApp Direct -->
+        <a href="https://wa.me/6281372315669?text=Halo%20Admin%20BPOM,%20saya%20ingin%20bertanya%20mengenai%20aturan%20barang%20bawaan." 
+           target="_blank" class="float-btn wa-btn" title="Hubungi via WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
+
+<!-- MODAL FAQ (Pertanyaan Umum) -->
+<div class="modal-overlay" id="faqModal" style="display: none;">
+    <div class="modal-box faq-modal-box">
+        <!-- Header Modal FAQ -->
+        <div class="faq-header">
+            <div class="faq-title-group">
+                <i class="fa-solid fa-circle-question faq-icon"></i>
+                <h3>Pertanyaan Umum (FAQ)</h3>
+            </div>
+            <button class="close-faq-btn" onclick="closeFaqModal()" title="Tutup">&times;</button>
         </div>
 
+        <!-- Konten Pertanyaan & Jawaban -->
+        <div class="faq-content">
+            <div class="faq-item">
+                <h4 class="faq-question">Q: Apa itu aturan pembatasan barang bawaan BPOM?</h4>
+                <div class="faq-answer">
+                    Aturan ini mengatur jumlah maksimal komoditi obat, obat tradisional, suplemen, kosmetik, dan pangan olahan yang boleh dibawa oleh penumpang dari luar negeri ke Indonesia untuk penggunaan pribadi tanpa izin khusus.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <h4 class="faq-question">Q: Apakah saya harus membawa resep dokter untuk semua jenis obat?</h4>
+                <div class="faq-answer">
+                    Resep dokter resmi diwajibkan khusus untuk <strong>Obat Resep/Obat Keras</strong>, <strong>Psikotropika (khusus wisatawan/WNA)</strong>, dan <strong>PKMK</strong>, atau jika jumlah obat yang dibawa melebihi dosis standar pemakaian harian.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <h4 class="faq-question">Q: Bagaimana jika barang yang saya bawa melebihi batas ketentuan?</h4>
+                <div class="faq-answer">
+                    Barang yang melebihi batas jumlah izin penggunaan pribadi dapat disita/dimusnahkan oleh pihak Bea Cukai sesuai dengan regulasi penindakan yang berlaku di area kedatangan internasional.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <h4 class="faq-question">Q: Apakah minuman beralkohol termasuk dalam kategori pengecekan ini?</h4>
+                <div class="faq-answer">
+                    Tidak. Layanan pengecekan ini khusus untuk obat, kosmetik, dan makanan olahan standar. Pembatasan minuman beralkohol diatur dalam regulasi kepabeanan (Bea Cukai) tersendiri.
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Tombol Tutup -->
+        <div class="faq-footer">
+            <button class="btn-primary-faq" onclick="closeFaqModal()">Tutup</button>
+        </div>
+    </div>
+</div>
+    </div>
         <!-- SEKSI KANAN: Chat Assistant Card -->
         <div class="chat-container">
             <!-- Header -->
@@ -70,45 +183,21 @@
 
             <!-- Chat Area -->
             <div class="chat-body" id="chatBody">
-                <div class="message bot-message">
+                <!-- Pesan Awal: Pertanyaan Konsultasi -->
+                <div class="message bot-message" id="welcomeMessage">
                     <div class="message-content">
-                        Halo! 👋 Selamat datang di layanan pengecekan Batasan Jumlah Barang Bawaan Anda.
-                    </div>
-                </div>
-
-                <!-- Pertanyaan Utama -->
-                <div class="message bot-message" id="initialQuestion">
-                    <div class="message-content">
-                        <strong>Kamu membawa apa?</strong>
+                        Halo! 👋 <br>
+                        Apakah kamu ingin konsultasi mengenai batasan barang bawaan?
                     </div>
                     
-                    <div class="options-group">
-                        <button onclick="sendCategory('obat')">
-                            <span class="option-icon">💊</span>
-                            <span class="option-text">Obat</span>
+                    <div class="options-group" id="consultationOptions">
+                        <button onclick="handleConsultation(true)">
+                            <span class="option-icon">✅</span>
+                            <span class="option-text">Ya</span>
                         </button>
-                        <button onclick="sendCategory('obat_tradisional')">
-                            <span class="option-icon">🌿</span>
-                            <span class="option-text">Obat Tradisional</span>
-                        </button>
-                        <button onclick="sendCategory('suplemen')">
-                            <span class="option-icon">🧪</span>
-                            <span class="option-text">Suplemen Kesehatan</span>
-                        </button>
-                        <button onclick="sendCategory('kosmetik')">
-                            <span class="option-icon">💄</span>
-                            <span class="option-text">Kosmetika</span>
-                        </button>
-                        <button onclick="sendCategory('pkmk')">
-                            <span class="option-icon">🏥</span>
-                            <span class="option-text">Pangan Olahan Medis Khusus (PKMK)</span>
-                        </button>
-                        <button onclick="sendCategory('makanan')">
-                            <span class="option-icon">🍱</span>
-                            <span class="option-text">
-                                Pangan Olahan Lain (Makanan)
-                                <small class="note-text">kecuali minuman beralkohol</small>
-                            </span>
+                        <button onclick="handleConsultation(false)">
+                            <span class="option-icon">❌</span>
+                            <span class="option-text">Tidak</span>
                         </button>
                     </div>
                 </div>
@@ -116,7 +205,7 @@
 
             <!-- Footer -->
             <div class="chat-footer">
-                <span>Pilih kategori barang untuk mengecek batasan muatan</span>
+                <span>Pilih opsi untuk memulai konsultasi</span>
             </div>
         </div>
 

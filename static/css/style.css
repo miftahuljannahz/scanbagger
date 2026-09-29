@@ -70,7 +70,7 @@ body {
     justify-content: center;
     gap: 48px;
     width: 100%;
-    max-width: 1040px;
+    max-width: 600px;
 }
 
 /* ==========================================================================
@@ -463,7 +463,44 @@ body {
     color: var(--text-tertiary);
     border-top: 1px solid var(--border-light);
 }
+.visitor-stat-box {
+        margin-top: 25px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
 
+    .visitor-stat-box h4 {
+        margin: 0 0 12px 0;
+        font-size: 15px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #1e293b; /* Warna teks gelap agar terbaca jelas */
+    }
+
+    .counter-wrapper {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        padding: 12px;
+        border-radius: 8px;
+        text-align: center;
+        min-height: 40px;
+    }
+
+    /* Memastikan gambar counter tampil dan menyembunyikan teks tautan saja */
+    .counter-wrapper a {
+        font-size: 0;
+        line-height: 0;
+        display: inline-block;
+    }
+
+    .counter-wrapper img {
+        display: inline-block !important;
+    }
 /* Modal Popup */
 .modal-overlay {
     position: fixed;
@@ -474,6 +511,239 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+}
+
+/* Container Tombol Melayang */
+.floating-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 999;
+}
+
+/* Base style tombol mengapung */
+.float-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+}
+
+.float-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Warna khusus tiap tombol */
+.wa-btn {
+    background-color: #25d366;
+}
+
+.faq-btn {
+    background-color: #0284c7;
+}
+
+/* Styling Khusus Modal FAQ */
+.faq-modal-box {
+    max-width: 500px;
+    width: 90%;
+    text-align: left;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header-faq {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+
+.modal-header-faq h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.close-faq-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.faq-content {
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-bottom: 16px;
+}
+
+.faq-item {
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.faq-item h4 {
+    margin: 0 0 6px 0;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+.faq-item p {
+    margin: 0;
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.5;
+}
+/* Container Modal FAQ */
+.faq-modal-box {
+    max-width: 520px;
+    width: 90%;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+    text-align: left !important; /* Memastikan rata kiri */
+}
+
+/* Header Modal FAQ Sejajar Menyamping */
+.faq-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 16px;
+}
+
+.faq-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.faq-icon {
+    font-size: 22px;
+    color: #0284c7;
+}
+
+.faq-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* Tombol X (Close) */
+.close-faq-btn {
+    background: transparent;
+    border: none;
+    font-size: 28px;
+    line-height: 1;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0 4px;
+    transition: color 0.2s;
+}
+
+.close-faq-btn:hover {
+    color: #ef4444;
+}
+
+/* Area Scroll Konten FAQ */
+.faq-content {
+    overflow-y: auto;
+    padding-right: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.faq-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.faq-question {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.4;
+    text-align: left;
+}
+
+.faq-answer {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* Footer Modal FAQ */
+.faq-footer {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.btn-primary-faq {
+    width: 100%;
+    padding: 11px;
+    background-color: #0284c7;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-primary-faq:hover {
+    background-color: #0369a1;
+}
+.btn-primary-faq {
+    width: 100%;
+    padding: 10px;
+    background-color: #0284c7;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .modal-box {
