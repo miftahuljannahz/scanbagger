@@ -137,6 +137,19 @@ body {
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Sembunyikan teks error dan link bawaan dari counter */
+.counter-wrapper a,
+a[href*="freevisitorcounters.com"],
+div[id*="e-counter"],
+.counter-wrapper + a {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+}
+
 .feature-item:hover {
     transform: translateY(-2px);
     background: #ffffff;
