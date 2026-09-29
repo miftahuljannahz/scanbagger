@@ -136,7 +136,6 @@ body {
     backdrop-filter: blur(10px);
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 /* Sembunyikan teks error dan link bawaan dari counter */
 .counter-wrapper a,
 a[href*="freevisitorcounters.com"],
@@ -768,6 +767,53 @@ div[id*="e-counter"],
     text-align: center;
     box-shadow: var(--shadow-expert);
 }
+/* ==========================================================================
+   PERBAIKAN PANEL KIRI & VISITOR COUNTER
+   ========================================================================== */
+
+/* 1. Pastikan info-panel bisa menampung elemen di bawahnya tanpa terpotong */
+.info-panel {
+    flex: 1;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow: visible !important; /* Mencegah kotak statistik tertutup */
+}
+
+/* 2. Styling Kotak Statistik Pengunjung */
+.visitor-stat-box {
+    margin-top: 12px;
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+    width: 100%;
+    display: block !important;
+}
+
+.visitor-stat-box h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+}
+
+.counter-wrapper {
+    background: #f8fafc;
+    border: 1px solid var(--border-light);
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+} 
 
 .modal-icon { font-size: 44px; margin-bottom: 12px; }
 .modal-icon.success { color: var(--status-success); }
