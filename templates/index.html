@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Batasan Barang Bawaan Pribadi - BPOM</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Main Container Layout Split 2 Kolom -->
+    <div class="main-wrapper">
+        
+        <!-- SEKSI KIRI: Penjelasan & Informasi BPOM -->
+        <div class="info-panel">
+            <div class="brand-badge">
+                <i class="fa-solid fa-shield-halved"></i> Standar Resmi BPOM
+            </div>
+            <h1>Layanan Cek Batasan Barang Bawaan</h1>
+            <p class="description">
+                Cek aturan resmi batasan jumlah muatan barang pribadi (obat, kosmetik, pangan) sesuai dengan regulasi Badan Pengawas Obat dan Makanan (BPOM).
+            </p>
+
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <div>
+                        <h4>Pengecekan Cepat & Praktis</h4>
+                        <p>Ketahui batasan maksimal tanpa harus mencari dokumen regulasi yang panjang.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-file-medical"></i></div>
+                    <div>
+                        <h4>Aturan Resep Dokter</h4>
+                        <p>Informasi jelas terkait obat-obatan & suplemen yang membutuhkan resep medis.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-square-check"></i></div>
+                    <div>
+                        <h4>Sesuai Ketentuan BPOM</h4>
+                        <p>Data batasan acuan langsung berdasarkan ketentuan BPOM.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-footer">
+                <p><i class="fa-solid fa-circle-info"></i> Pastikan membawa resep dokter resmi untuk obat sediaan khusus/melebihi batas harian.</p>
+            </div>
+        </div>
+
+        <!-- SEKSI KANAN: Chat Assistant Card -->
+        <div class="chat-container">
+            <!-- Header -->
+            <div class="chat-header">
+                <div class="avatar">
+                    <img src="https://asset.kompas.com/crops/8dRSOkZbQs92eR7-2DZx_pbAfh0=/42x0:570x352/1200x800/data/photo/2022/10/28/635b76d13a920.jpg" alt="Logo BPOM">
+                </div>
+                <div class="header-info">
+                    <h3>Asisten Cek Barang Bawaan</h3>
+                    <p><span class="online-indicator"></span> Standar BPOM</p>
+                </div>
+                <button class="reset-btn" onclick="resetChat()" title="Mulai Ulang">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="chat-body" id="chatBody">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        Halo! 👋 Selamat datang di layanan pengecekan Batasan Jumlah Barang Bawaan Anda.
+                    </div>
+                </div>
+
+                <!-- Pertanyaan Utama -->
+                <div class="message bot-message" id="initialQuestion">
+                    <div class="message-content">
+                        <strong>Kamu membawa apa?</strong>
+                    </div>
+                    
+                    <div class="options-group">
+                        <button onclick="sendCategory('obat')">
+                            <span class="option-icon">💊</span>
+                            <span class="option-text">Obat</span>
+                        </button>
+                        <button onclick="sendCategory('obat_tradisional')">
+                            <span class="option-icon">🌿</span>
+                            <span class="option-text">Obat Tradisional</span>
+                        </button>
+                        <button onclick="sendCategory('suplemen')">
+                            <span class="option-icon">🧪</span>
+                            <span class="option-text">Suplemen Kesehatan</span>
+                        </button>
+                        <button onclick="sendCategory('kosmetik')">
+                            <span class="option-icon">💄</span>
+                            <span class="option-text">Kosmetika</span>
+                        </button>
+                        <button onclick="sendCategory('pkmk')">
+                            <span class="option-icon">🏥</span>
+                            <span class="option-text">Pangan Olahan Medis Khusus (PKMK)</span>
+                        </button>
+                        <button onclick="sendCategory('makanan')">
+                            <span class="option-icon">🍱</span>
+                            <span class="option-text">
+                                Pangan Olahan Lain (Makanan)
+                                <small class="note-text">kecuali minuman beralkohol</small>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="chat-footer">
+                <span>Pilih kategori barang untuk mengecek batasan muatan</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal PopUp Result -->
+    <div class="modal-overlay" id="modalPopup">
+        <div class="modal-box">
+            <div class="modal-icon" id="modalIcon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 id="modalTitle">Status</h3>
+            <p id="modalMessage">Detail status...</p>
+            <button id="modalBtn" onclick="closeModal()">Saya Mengerti</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
