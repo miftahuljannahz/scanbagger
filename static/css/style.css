@@ -120,8 +120,8 @@ body {
 .features-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 4px;
+    gap: 5px;
+    margin-top: 1px;
 }
 
 .feature-item {
@@ -502,6 +502,59 @@ body {
     .counter-wrapper img {
         display: inline-block !important;
     }
+
+    /* Layout Wrapper Utama 2 Kolom */
+.main-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 32px; /* Jarak antar panel kiri dan kanan */
+    max-width: 1100px; /* Batas lebar keseluruhan halaman */
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Panel Kiri (Info & Banner) */
+.info-panel {
+    flex: 1 1 50%; /* Mengambil 50% lebar area */
+    max-width: 520px; /* Diperbesar agar teks dan banner maskot lega */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Jarak pas antar elemen vertikal */
+}
+
+/* Panel Kanan (Chat Assistant) */
+.chat-container {
+    flex: 1 1 50%; /* Mengambil 50% lebar area */
+    max-width: 450px; /* Ukuran ideal kartu chat */
+    width: 100%;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+/* Responsif untuk Layar HP/Tablet */
+@media (max-width: 868px) {
+    .main-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+    .info-panel, .chat-container {
+        max-width: 100%;
+    }
+}.modal-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
 /* Modal Popup */
 .modal-overlay {
     position: fixed;
@@ -556,168 +609,181 @@ body {
     background-color: #0284c7;
 }
 
-/* Styling Khusus Modal FAQ */
-.faq-modal-box {
-    max-width: 500px;
-    width: 90%;
-    text-align: left;
-    max-height: 80vh;
-    display: flex;
-    flex-direction: column;
-}
+/* ==========================================
+   CSS MODAL & KONTEN FAQ (FULL & RAPI)
+   ========================================== */
 
-.modal-header-faq {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-}
-
-.modal-header-faq h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #0f172a;
+/* 1. Overlay Hitam Transparan di Belakang Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);            /* Efek buram halus di latar belakang */
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-.close-faq-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: #64748b;
-    cursor: pointer;
+/* 2. Styling Utama Kotak Modal FAQ (Diperlebar) */
+.modal-box.faq-modal-box {
+    width: 100% !important;
+    max-width: 650px !important;            /* Diperlebar agar teks dan kotak di dalamnya lega */
+    max-height: 85vh !important;           /* Batas tinggi agar tidak jebol layar di laptop/HP */
+    display: flex !important;
+    flex-direction: column !important;
+    background: #ffffff !important;
+    padding: 24px 28px !important;         /* Ruang dalam yang lapang */
+    border-radius: 20px !important;         /* Sudut rounded modern */
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15) !important;
+    box-sizing: border-box !important;
+    animation: modalPop 0.25s ease-out;     /* Animasi pop-up saat dibuka */
 }
 
-.faq-content {
-    overflow-y: auto;
-    padding-right: 8px;
-    margin-bottom: 16px;
-}
-
-.faq-item {
-    margin-bottom: 14px;
-    padding-bottom: 12px;
-    border-bottom: 1px dashed #e2e8f0;
-}
-
-.faq-item:last-child {
-    border-bottom: none;
-}
-
-.faq-item h4 {
-    margin: 0 0 6px 0;
-    font-size: 14px;
-    color: #1e293b;
-}
-
-.faq-item p {
-    margin: 0;
-    font-size: 13px;
-    color: #475569;
-    line-height: 1.5;
-}
-/* Container Modal FAQ */
-.faq-modal-box {
-    max-width: 520px;
-    width: 90%;
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    max-height: 85vh;
-    text-align: left !important; /* Memastikan rata kiri */
-}
-
-/* Header Modal FAQ Sejajar Menyamping */
+/* 3. Header Modal (Judul FAQ & Tombol Tutup) */
 .faq-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #e2e8f0;
-    margin-bottom: 16px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 16px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid #e5e7eb !important;
 }
 
 .faq-title-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
-.faq-icon {
-    font-size: 22px;
-    color: #0284c7;
-}
-
-.faq-header h3 {
+.faq-title-group h3 {
     margin: 0;
     font-size: 18px;
-    font-weight: 600;
-    color: #0f172a;
+    font-weight: 700;
+    color: #1f2937;
 }
 
-/* Tombol X (Close) */
-.close-faq-btn {
-    background: transparent;
-    border: none;
-    font-size: 28px;
-    line-height: 1;
-    color: #64748b;
-    cursor: pointer;
-    padding: 0 4px;
-    transition: color 0.2s;
+/* Tombol Silang (X) di Kanan Atas */
+/* Sembunyikan tombol X sepenuhnya */
+.close-faq-btn,
+.faq-header button.close-faq-btn {
+    display: none !important;
 }
 
 .close-faq-btn:hover {
-    color: #ef4444;
+    background: #e5e7eb;
+    color: #111827;
 }
 
-/* Area Scroll Konten FAQ */
+/* 4. Area Konten FAQ yang Bisa Di-scroll */
 .faq-content {
-    overflow-y: auto;
-    padding-right: 8px;
+    width: 100% !important;
+    flex: 1 !important;
+    overflow-y: auto !important;           /* Scroll otomatis jika pertanyaan banyak */
+    padding-right: 8px !important;         /* Jarak agar teks tidak menempel scrollbar */
+    box-sizing: border-box !important;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;                              /* Jarak antar item pertanyaan */
 }
 
+/* 5. Item Pertanyaan & Jawaban FAQ */
 .faq-item {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    width: 100% !important;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    box-sizing: border-box !important;
+    transition: border-color 0.2s ease;
 }
 
+.faq-item:hover {
+    border-color: #0284c7;                  /* Highlight border saat kursor di atasnya */
+}
+
+/* Teks Pertanyaan (Q:) */
 .faq-question {
-    margin: 0;
     font-size: 14px;
-    font-weight: 600;
-    color: #1e293b;
-    line-height: 1.4;
-    text-align: left;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 10px;
+    line-height: 1.5;
 }
 
+/* Teks Jawaban (Resep/Penjelasan) */
 .faq-answer {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 12px;
     font-size: 13px;
     color: #475569;
-    line-height: 1.5;
-    text-align: left;
+    background: #f8fafc;
+    border-left: 4px solid #0284c7;          /* Garis penegas di sebelah kiri jawaban */
+    padding: 12px 14px;
+    border-radius: 6px;
+    margin: 0;
+    line-height: 1.6;
+    word-break: break-word;                  /* Memastikan teks tidak meluap keluar */
 }
 
-/* Footer Modal FAQ */
+/* 6. Footer Modal (Tombol Tutup di Bawah) */
 .faq-footer {
-    margin-top: 16px;
+    margin-top: 20px;
     padding-top: 12px;
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid #e5e7eb;
+}
+
+.faq-btn-submit,
+.faq-footer button {
+    width: 100% !important;
+    background: #0284c7;                     /* Warna biru sesuai tombol UI BPOM Anda */
+    color: #ffffff;
+    border: none;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.faq-btn-submit:hover,
+.faq-footer button:hover {
+    background: #0369a1;
+}
+
+/* 7. Kustomisasi Scrollbar Lebih Rapi */
+.faq-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.faq-content::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.faq-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.faq-content::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* 8. Animasi Modal Pop-up */
+@keyframes modalPop {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .btn-primary-faq {
@@ -753,7 +819,7 @@ body {
     max-width: 360px;
     padding: 26px;
     border-radius: 22px;
-    text-align: center;
+    text-align: left;
     box-shadow: var(--shadow-expert);
 }
 /* ==========================================================================

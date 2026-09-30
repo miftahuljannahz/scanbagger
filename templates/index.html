@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cek Batasan Barang Bawaan Pribadi - BPOM</title>
+    <title>LARTAS - BPOM Dumai</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     
     <style>
-        /* Styling khusus untuk widget statistik pengunjung agar terbaca di background terang */
         .visitor-stat-box {
             margin-top: 25px;
             background: #ffffff;
@@ -49,6 +48,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Main Container Layout Split 2 Kolom -->
@@ -63,6 +63,17 @@
             <p class="description">
                 Cek aturan resmi batasan jumlah barang bawaan penumpang untuk penggunaan pribadi (obat, kosmetik, pangan) sesuai dengan regulasi Badan Pengawas Obat dan Makanan.
             </p>
+            
+            <!-- TAMPILAN BANNER MASKOT BEDELAU -->
+            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); border: 1px solid #bbf7d0; border-radius: 16px; padding: 2px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); min-height: 100px;">
+                <div style="flex: 1;">
+                    <span style="display: block; margin: 2px 0 0 0; font-size: 17px; font-weight: 700; color: #15803d; text-transform: uppercase; letter-spacing: 0.5px;">
+                        BEDELAU BPOM Dumai
+                    </span>
+                    <p style="margin: 4px 0 0 0; font-size: 12px; color: #475569; line-height: 1.4;">Berintegritas, Efisien, Dan Melayani Sepenuh Hati</p>
+                </div>
+                <img src="/static/images/harmonis.png" alt="Maskot BEDELAU" style="height: 110px; width: auto; filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.15)); flex-shrink: 0; transform: scale(1.05); transition: transform 0.2s ease;" />
+            </div>
 
             <div class="features-list">
                 <div class="feature-item">
@@ -76,7 +87,7 @@
                     <div class="feature-icon"><i class="fa-solid fa-file-medical"></i></div>
                     <div>
                         <h4>Aturan Resep Dokter</h4>
-                        <p>Informasi jelas terkait obat-obatan & suplemen yang membutuhkan resep medis.</p>
+                        <p>Obat dan suplemen yang wajib resep dokter.</p>
                     </div>
                 </div>
                 <div class="feature-item">
@@ -88,109 +99,36 @@
                 </div>
             </div>
 
-            <div class="info-footer">
-                <p><i class="fa-solid fa-circle-info"></i> Pastikan membawa resep dokter resmi untuk obat sediaan khusus/melebihi batas harian.</p>
-            </div>
-
             <!-- SEKSI STATISTIK PENGUNJUNG -->
-   <div class="counter-wrapper">
-  <!-- Tampilan Kotak Pengunjung (Lokal HTML & CSS) -->
-  <div style="font-family: inherit; font-size: 13px; font-weight: 600; color: #166534; background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 6px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 8px;">
-    <span>Total Pengunjung:</span>
-    <span id="visitor-count">1</span>
-  </div>
-
-  <script>
-    (function() {
-      // Menggunakan LocalStorage browser sebagai counter lokal yang pasti muncul
-      let count = localStorage.getItem('local_visitor_count') || 100;
-      count = parseInt(count) + 1;
-      localStorage.setItem('local_visitor_count', count);
-      
-      document.getElementById('visitor-count').innerText = count.toLocaleString('id-ID');
-
-      // Sync ke server counter gratis jika online
-      fetch('https://api.hitcounter.pythonanywhere.com/count/up?namespace=lartasbpom_dumai&KEY=total_visits')
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.count) {
-            document.getElementById('visitor-count').innerText = data.count.toLocaleString('id-ID');
-          }
-        })
-        .catch(() => {});
-    })();
-  </script>
-</div>
-</div>
-</div>
-
-<!-- FLOATING BUTTONS (Pojok Kanan Bawah) -->
-    <div class="floating-container">
-        <!-- Tombol FAQ -->
-        <button class="float-btn faq-btn" onclick="openFaqModal()" title="Pertanyaan Umum (FAQ)">
-            <i class="fa-solid fa-circle-question"></i>
-        </button>
-
-        <!-- Tombol WhatsApp Direct -->
-        <a href="https://wa.me/6281372315669?text=Halo%20Admin%20BPOM,%20saya%20ingin%20bertanya%20mengenai%20aturan%20barang%20bawaan." 
-           target="_blank" class="float-btn wa-btn" title="Hubungi via WhatsApp">
-            <i class="fa-brands fa-whatsapp"></i>
-        </a>
-    </div>
-
-<!-- MODAL FAQ (Pertanyaan Umum) -->
-<div class="modal-overlay" id="faqModal" style="display: none;">
-    <div class="modal-box faq-modal-box">
-        <!-- Header Modal FAQ -->
-        <div class="faq-header">
-            <div class="faq-title-group">
-                <i class="fa-solid fa-circle-question faq-icon"></i>
-                <h3>Pertanyaan Umum (FAQ)</h3>
-            </div>
-            <button class="close-faq-btn" onclick="closeFaqModal()" title="Tutup">&times;</button>
-        </div>
-
-        <!-- Konten Pertanyaan & Jawaban -->
-        <div class="faq-content">
-            <div class="faq-item">
-                <h4 class="faq-question">Q: Apa itu aturan pembatasan barang bawaan BPOM?</h4>
-                <div class="faq-answer">
-                    Aturan ini mengatur jumlah maksimal komoditi obat, obat tradisional, suplemen, kosmetik, dan pangan olahan yang boleh dibawa oleh penumpang dari luar negeri ke Indonesia untuk penggunaan pribadi tanpa izin khusus.
+            <div class="counter-wrapper">
+                <div style="font-family: inherit; font-size: 13px; font-weight: 600; color: #166534; background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 6px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 8px;">
+                    <span>Total Pengunjung:</span>
+                    <span id="visitor-count">1</span>
                 </div>
-            </div>
 
-            <div class="faq-item">
-                <h4 class="faq-question">Q: Apakah saya harus membawa resep dokter untuk semua jenis obat?</h4>
-                <div class="faq-answer">
-                    Resep dokter resmi diwajibkan khusus untuk <strong>Obat Resep/Obat Keras</strong>, <strong>Psikotropika (khusus wisatawan/WNA)</strong>, dan <strong>PKMK</strong>, atau jika jumlah obat yang dibawa melebihi dosis standar pemakaian harian.
-                </div>
-            </div>
+                <script>
+                    (function() {
+                        let count = localStorage.getItem('local_visitor_count') || 100;
+                        count = parseInt(count) + 1;
+                        localStorage.setItem('local_visitor_count', count);
+                        
+                        document.getElementById('visitor-count').innerText = count.toLocaleString('id-ID');
 
-            <div class="faq-item">
-                <h4 class="faq-question">Q: Bagaimana jika barang yang saya bawa melebihi batas ketentuan?</h4>
-                <div class="faq-answer">
-                    Barang yang melebihi batas jumlah izin penggunaan pribadi dapat disita/dimusnahkan oleh pihak Bea Cukai sesuai dengan regulasi penindakan yang berlaku di area kedatangan internasional.
-                </div>
+                        fetch('https://api.hitcounter.pythonanywhere.com/count/up?namespace=lartasbpom_dumai&KEY=total_visits')
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data && data.count) {
+                                    document.getElementById('visitor-count').innerText = data.count.toLocaleString('id-ID');
+                                }
+                            })
+                            .catch(() => {});
+                    })();
+                </script>
             </div>
+        </div> <!-- PENUTUP .info-panel -->
 
-            <div class="faq-item">
-                <h4 class="faq-question">Q: Apakah minuman beralkohol termasuk dalam kategori pengecekan ini?</h4>
-                <div class="faq-answer">
-                    Tidak. Layanan pengecekan ini khusus untuk obat, kosmetik, dan makanan olahan standar. Pembatasan minuman beralkohol diatur dalam regulasi kepabeanan (Bea Cukai) tersendiri.
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer Tombol Tutup -->
-        <div class="faq-footer">
-            <button class="btn-primary-faq" onclick="closeFaqModal()">Tutup</button>
-        </div>
-    </div>
-</div>
-    </div>
         <!-- SEKSI KANAN: Chat Assistant Card -->
         <div class="chat-container">
-            <!-- Header -->
             <div class="chat-header">
                 <div class="avatar">
                     <img src="https://asset.kompas.com/crops/8dRSOkZbQs92eR7-2DZx_pbAfh0=/42x0:570x352/1200x800/data/photo/2022/10/28/635b76d13a920.jpg" alt="Logo BPOM">
@@ -204,9 +142,7 @@
                 </button>
             </div>
 
-            <!-- Chat Area -->
             <div class="chat-body" id="chatBody">
-                <!-- Pesan Awal: Pertanyaan Konsultasi -->
                 <div class="message bot-message" id="welcomeMessage">
                     <div class="message-content">
                         Halo! 👋 <br>
@@ -226,23 +162,83 @@
                 </div>
             </div>
 
-            <!-- Footer -->
             <div class="chat-footer">
                 <span>Pilih opsi untuk memulai konsultasi</span>
             </div>
         </div>
 
+    </div> <!-- PENUTUP .main-wrapper -->
+
+    <!-- FLOATING BUTTONS (Pojok Kanan Bawah) -->
+    <div class="floating-container">
+        <button class="float-btn faq-btn" onclick="openFaqModal()" title="Pertanyaan Umum (FAQ)">
+            <i class="fa-solid fa-circle-question"></i>
+        </button>
+
+        <a href="https://wa.me/6281372315669?text=Halo%20Admin%20BPOM,%20saya%20ingin%20bertanya%20mengenai%20aturan%20barang%20bawaan." 
+           target="_blank" class="float-btn wa-btn" title="Hubungi via WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
     </div>
 
-    <!-- Modal PopUp Result -->
-    <div class="modal-overlay" id="modalPopup">
-        <div class="modal-box">
-            <div class="modal-icon" id="modalIcon">
-                <i class="fa-solid fa-circle-check"></i>
+    <!-- MODAL FAQ -->
+    <div class="modal-overlay" id="faqModal" style="display: none;">
+        <div class="modal-box faq-modal-box">
+            <div class="faq-header">
+                <div class="faq-title-group">
+                    <i class="fa-solid fa-circle-question faq-icon"></i>
+                    <h3>Pertanyaan Umum (FAQ)</h3>
+                </div>
+                <button class="close-faq-btn" onclick="closeFaqModal()" title="Tutup">&times;</button>
             </div>
-            <h3 id="modalTitle">Status</h3>
-            <p id="modalMessage">Detail status...</p>
-            <button id="modalBtn" onclick="closeModal()">Saya Mengerti</button>
+
+            <div class="faq-content">
+                <div class="faq-item">
+                    <h4 class="faq-question">Q: Apa itu aturan pembatasan barang bawaan BPOM?</h4>
+                    <div class="faq-answer">
+                        Aturan ini mengatur jumlah maksimal komoditi obat, obat tradisional, suplemen, kosmetik, dan pangan olahan yang boleh dibawa oleh penumpang dari luar negeri ke Indonesia untuk penggunaan pribadi tanpa izin khusus.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <h4 class="faq-question">Q: Apakah saya harus membawa resep dokter untuk semua jenis obat?</h4>
+                    <div class="faq-answer">
+                        Resep dokter resmi diwajibkan khusus untuk <strong>Obat Resep/Obat Keras</strong>, <strong>Psikotropika (khusus wisatawan/WNA)</strong>, dan <strong>PKMK</strong>, atau jika jumlah obat yang dibawa melebihi dosis standar pemakaian harian.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <h4 class="faq-question">Q: Bagaimana jika barang yang saya bawa melebihi batas ketentuan?</h4>
+                    <div class="faq-answer">
+                        Barang yang melebihi batas jumlah izin penggunaan pribadi dapat disita/dimusnahkan oleh pihak Bea Cukai sesuai dengan regulasi penindakan yang berlaku di area kedatangan internasional.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <h4 class="faq-question">Q: Apakah minuman beralkohol termasuk dalam kategori pengecekan ini?</h4>
+                    <div class="faq-answer">
+                        Tidak. Layanan pengecekan ini khusus untuk obat, kosmetik, dan makanan olahan standar. Pembatasan minuman beralkohol diatur dalam regulasi kepabeanan (Bea Cukai) tersendiri.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-footer">
+                <button class="btn-primary-faq" onclick="closeFaqModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL HASIL PENGECEKAN -->
+    <div class="modal-overlay" id="modalPopup" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-icon" id="modalIcon"></div>
+            <h3 id="modalTitle" style="margin-top: 10px; font-size: 18px; font-weight: 700; color: #0f172a;"></h3>
+            <div class="modal-message" id="modalMessage" style="margin-top: 10px; font-size: 14px; color: #334155;"></div>
+            <div style="margin-top: 20px; text-align: center;">
+                <button id="modalBtn" onclick="closeModal()" style="padding: 8px 24px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; background-color: #cf1818; color: white;">
+                    Tutup
+                </button>
+            </div>
         </div>
     </div>
 
