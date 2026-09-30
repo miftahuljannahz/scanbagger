@@ -242,6 +242,11 @@
         </div>
     </div>
 
+    <!-- AUDIO SOUND EFFECTS -->
+    <audio id="audioRefresh" src="{{ url_for('static', filename='audio/refresh.mp3') }}" preload="auto"></audio>
+    <audio id="audioPopup" src="{{ url_for('static', filename='audio/popup.mp3') }}" preload="auto"></audio>
+
+    <!-- PEMANGGILAN SCRIPT HANYA SEKALI DI SINI -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

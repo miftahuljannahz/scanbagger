@@ -1,14 +1,74 @@
-const chatBody = document.getElementById('chatBody');
+// Variabel aman agar tidak crash jika terjadi kelalaian pemanggilan script ganda
+var chatBody = document.getElementById('chatBody');
 let currentActions = null;
 
-// Helper function untuk mengubah Markdown **bold** dan Bullet Point (•) menjadi HTML
+// ==========================================
+// 1. AUDIOS & AUTOPLAY HANDLER
+// ==========================================
+const audioRefresh = document.getElementById('audioRefresh');
+const audioPopup = document.getElementById('audioPopup');
+
+let audioUnlocked = false;
+
+// Fungsi untuk membuka blokir autoplay browser begitu pengguna melakukan interaksi awal
+function unlockAudioEngine() {
+    if (audioUnlocked) return;
+    
+    // Coba izinkan konteks audio
+    if (audioRefresh) {
+        audioRefresh.play().then(() => {
+            audioRefresh.pause();
+            audioRefresh.currentTime = 0;
+            audioUnlocked = true;
+        }).catch(() => {});
+    }
+
+    if (audioPopup) {
+        audioPopup.play().then(() => {
+            audioPopup.pause();
+            audioPopup.currentTime = 0;
+            audioUnlocked = true;
+        }).catch(() => {});
+    }
+}
+
+// Tangkap klik pertama atau sentuhan pertama pengguna
+document.addEventListener('click', unlockAudioEngine, { once: true });
+document.addEventListener('touchstart', unlockAudioEngine, { once: true });
+
+function playRefreshSound() {
+    if (audioRefresh) {
+        audioRefresh.currentTime = 0;
+        audioRefresh.play().catch(err => {
+            console.info("Autoplay refresh diblokir browser. Suara diaktifkan setelah interaksi klik pertama.");
+        });
+    }
+}
+
+function playPopupSound() {
+    if (audioPopup) {
+        audioPopup.currentTime = 0;
+        audioPopup.play().catch(err => {
+            console.warn("Gagal memutar audio popup:", err);
+        });
+    }
+}
+
+// Coba putar otomatis saat pertama kali dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    playRefreshSound();
+});
+
+// ==========================================
+// 2. PARSER MARKDOWN & HELPER FUNCTIONS
+// ==========================================
 function parseMarkdown(text) {
     if (!text) return '';
 
     // 1. Ubah teks bold **kata** menjadi <strong>kata</strong>
     let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-    // 2. Ubah bullet points (•) menjadi daftar <ul><li>...</li></ul>
+    // 2. Ubah bullet points (• atau -) menjadi daftar HTML <ul><li>...</li></ul>
     const lines = formatted.split('\n');
     let inList = false;
     let result = '';
@@ -37,46 +97,9 @@ function parseMarkdown(text) {
     return result;
 }
 
-// Fungsi penanganan awal pertanyaan Konsultasi (Ya / Tidak)
-function handleConsultation(isYes) {
-    const optionsGroup = document.getElementById('consultationOptions');
-    if (optionsGroup) {
-        optionsGroup.remove();
-    }
-
-    if (isYes) {
-        appendUserMessage("Ya");
-        appendBotMessage("Selamat datang di layanan pengecekan Batasan Jumlah Barang Bawaan Anda.");
-
-        // Panggil endpoint main_menu backend jika ada, atau tampilkan menu lokal
-        fetch('/api/main_menu')
-            .then(res => res.json())
-            .then(data => {
-                appendMainMenu(data.message, data.options);
-            })
-            .catch(() => {
-                // Fallback lokal jika backend belum merespons menu utama
-                showDefaultMainMenu();
-            });
-    } else {
-        appendUserMessage("Tidak");
-        appendBotMessage("Semoga perjalanan Anda menyenangkan! 👋");
-    }
-}
-
-// Menu utama lokal jika fetch main_menu memerlukan visualisasi langsung
-function showDefaultMainMenu() {
-    const defaultOptions = [
-        { id: 'obat', text: 'Obat', icon: '💊' },
-        { id: 'obat_tradisional', text: 'Obat Tradisional', icon: '🌿' },
-        { id: 'suplemen', text: 'Suplemen Kesehatan', icon: '🧪' },
-        { id: 'kosmetik', text: 'Kosmetika', icon: '💄' },
-        { id: 'pkmk', text: 'Pangan Olahan Medis Khusus (PKMK)', icon: '🏥' },
-        { id: 'makanan', text: 'Pangan Olahan Lain (Makanan)', icon: '🍱', note: 'kecuali minuman beralkohol' }
-    ];
-    appendMainMenu("Kamu membawa apa?", defaultOptions);
-}
-
+// ==========================================
+// 3. CHAT DISPLAY & MESSAGE BUILDERS
+// ==========================================
 function appendUserMessage(text) {
     const msgDiv = document.createElement('div');
     msgDiv.className = 'message user-message';
@@ -86,6 +109,9 @@ function appendUserMessage(text) {
 }
 
 function appendBotMessage(text, options = null, inputKey = null) {
+    // Memutar suara efek popup pesan bot
+    playPopupSound();
+
     const msgDiv = document.createElement('div');
     msgDiv.className = 'message bot-message';
     
@@ -120,8 +146,10 @@ function appendBotMessage(text, options = null, inputKey = null) {
     chatBody.scrollTop = chatBody.scrollHeight;
 }
 
-// Fungsi khusus menampilkan kategori utama di chat
 function appendMainMenu(message, options) {
+    // Memutar suara efek popup menu utama
+    playPopupSound();
+
     const msgDiv = document.createElement('div');
     msgDiv.className = 'message bot-message';
     
@@ -143,6 +171,65 @@ function appendMainMenu(message, options) {
     msgDiv.innerHTML = htmlContent;
     chatBody.appendChild(msgDiv);
     chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function appendAfterActionOptions(actions) {
+    playPopupSound();
+
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'message bot-message';
+    
+    let htmlContent = `<div class="message-content">Apakah Anda ingin mengecek barang lainnya?</div>`;
+    htmlContent += `<div class="options-group">`;
+    
+    actions.forEach(opt => {
+        htmlContent += `<button onclick="handleAfterAction('${opt.id}', '${opt.text}')">${opt.text}</button>`;
+    });
+    
+    htmlContent += `</div>`;
+    msgDiv.innerHTML = htmlContent;
+    
+    chatBody.appendChild(msgDiv);
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+// ==========================================
+// 4. FLOW & API LOGIC
+// ==========================================
+function handleConsultation(isYes) {
+    const optionsGroup = document.getElementById('consultationOptions');
+    if (optionsGroup) {
+        optionsGroup.remove();
+    }
+
+    if (isYes) {
+        appendUserMessage("Ya");
+        appendBotMessage("Selamat datang di layanan pengecekan Batasan Jumlah Barang Bawaan Anda.");
+
+        fetch('/api/main_menu')
+            .then(res => res.json())
+            .then(data => {
+                appendMainMenu(data.message, data.options);
+            })
+            .catch(() => {
+                showDefaultMainMenu();
+            });
+    } else {
+        appendUserMessage("Tidak");
+        appendBotMessage("Semoga perjalanan Anda menyenangkan! 👋");
+    }
+}
+
+function showDefaultMainMenu() {
+    const defaultOptions = [
+        { id: 'obat', text: 'Obat', icon: '💊' },
+        { id: 'obat_tradisional', text: 'Obat Tradisional', icon: '🌿' },
+        { id: 'suplemen', text: 'Suplemen Kesehatan', icon: '🧪' },
+        { id: 'kosmetik', text: 'Kosmetika', icon: '💄' },
+        { id: 'pkmk', text: 'Pangan Olahan Medis Khusus (PKMK)', icon: '🏥' },
+        { id: 'makanan', text: 'Pangan Olahan Lain (Makanan)', icon: '🍱', note: 'kecuali minuman beralkohol' }
+    ];
+    appendMainMenu("Kamu membawa apa?", defaultOptions);
 }
 
 function sendCategory(categoryKey) {
@@ -245,6 +332,26 @@ function sendPkmkAnswer(hasPrescription) {
     });
 }
 
+function handleAfterAction(actionId, text) {
+    appendUserMessage(text);
+
+    if (actionId === 'check_another') {
+        fetch('/api/main_menu')
+            .then(res => res.json())
+            .then(data => {
+                appendMainMenu(data.message, data.options);
+            })
+            .catch(() => {
+                showDefaultMainMenu();
+            });
+    } else if (actionId === 'finish') {
+        appendBotMessage("Terima kasih telah menggunakan layanan pengecekan batasan barang bawaan. Semoga perjalanan Anda menyenangkan! 👋");
+    }
+}
+
+// ==========================================
+// 5. MODALS & UTILITY FUNCTIONS
+// ==========================================
 function showModal(status, title, message, actions = null) {
     const modalIcon = document.getElementById('modalIcon');
     const modalBtn = document.getElementById('modalBtn');
@@ -277,7 +384,6 @@ function closeModal() {
     }
 }
 
-// Fungsi Membuka Modal FAQ
 function openFaqModal() {
     const faqModal = document.getElementById('faqModal');
     if (faqModal) {
@@ -285,46 +391,10 @@ function openFaqModal() {
     }
 }
 
-// Fungsi Menutup Modal FAQ
 function closeFaqModal() {
     const faqModal = document.getElementById('faqModal');
     if (faqModal) {
         faqModal.style.display = 'none';
-    }
-}
-
-function appendAfterActionOptions(actions) {
-    const msgDiv = document.createElement('div');
-    msgDiv.className = 'message bot-message';
-    
-    let htmlContent = `<div class="message-content">Apakah Anda ingin mengecek barang lainnya?</div>`;
-    htmlContent += `<div class="options-group">`;
-    
-    actions.forEach(opt => {
-        htmlContent += `<button onclick="handleAfterAction('${opt.id}', '${opt.text}')">${opt.text}</button>`;
-    });
-    
-    htmlContent += `</div>`;
-    msgDiv.innerHTML = htmlContent;
-    
-    chatBody.appendChild(msgDiv);
-    chatBody.scrollTop = chatBody.scrollHeight;
-}
-
-function handleAfterAction(actionId, text) {
-    appendUserMessage(text);
-
-    if (actionId === 'check_another') {
-        fetch('/api/main_menu')
-            .then(res => res.json())
-            .then(data => {
-                appendMainMenu(data.message, data.options);
-            })
-            .catch(() => {
-                showDefaultMainMenu();
-            });
-    } else if (actionId === 'finish') {
-        appendBotMessage("Terima kasih telah menggunakan layanan pengecekan batasan barang bawaan. Semoga perjalanan Anda menyenangkan! 👋");
     }
 }
 
