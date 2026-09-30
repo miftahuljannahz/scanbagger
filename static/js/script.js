@@ -1,38 +1,36 @@
-// Variabel aman agar tidak crash jika terjadi kelalaian pemanggilan script ganda
+// ==========================================
+// 1. INITIALIZATION & AUDIO HANDLER
+// ==========================================
 var chatBody = document.getElementById('chatBody');
 let currentActions = null;
-
-// ==========================================
-// 1. AUDIOS & AUTOPLAY HANDLER
-// ==========================================
-const audioRefresh = document.getElementById('audioRefresh');
-const audioPopup = document.getElementById('audioPopup');
-
 let audioUnlocked = false;
 
-// Fungsi untuk membuka blokir autoplay browser begitu pengguna melakukan interaksi awal
+// Deklarasi Elemen Audio dari DOM
+const audioRefresh = document.getElementById('audioRefresh');
+const audioPopup = document.getElementById('audioPopup');
+const audioSuccess = document.getElementById('audioSuccess');
+const audioWarning = document.getElementById('audioWarning');
+
+// Fungsi tunggal untuk membongkar proteksi Autoplay browser
 function unlockAudioEngine() {
     if (audioUnlocked) return;
     
-    // Coba izinkan konteks audio
-    if (audioRefresh) {
-        audioRefresh.play().then(() => {
-            audioRefresh.pause();
-            audioRefresh.currentTime = 0;
-            audioUnlocked = true;
-        }).catch(() => {});
-    }
-
-    if (audioPopup) {
-        audioPopup.play().then(() => {
-            audioPopup.pause();
-            audioPopup.currentTime = 0;
-            audioUnlocked = true;
-        }).catch(() => {});
-    }
+    const audioList = [audioRefresh, audioPopup, audioSuccess, audioWarning];
+    
+    audioList.forEach(audio => {
+        if (audio) {
+            audio.play().then(() => {
+                audio.pause();
+                audio.currentTime = 0;
+            }).catch(err => {
+                console.warn("Autoplay unlocking pending user interaction:", err);
+            });
+        }
+    });
+    audioUnlocked = true;
 }
 
-// Tangkap klik pertama atau sentuhan pertama pengguna
+// Tangkap interaksi pertama pengguna untuk mengaktifkan audio
 document.addEventListener('click', unlockAudioEngine, { once: true });
 document.addEventListener('touchstart', unlockAudioEngine, { once: true });
 
@@ -54,7 +52,17 @@ function playPopupSound() {
     }
 }
 
-// Coba putar otomatis saat pertama kali dimuat
+function playResultSound(status) {
+    if (status === 'success' && audioSuccess) {
+        audioSuccess.currentTime = 0;
+        audioSuccess.play().catch(err => console.warn("Gagal memutar audio success:", err));
+    } else if ((status === 'warning' || status === 'danger') && audioWarning) {
+        audioWarning.currentTime = 0;
+        audioWarning.play().catch(err => console.warn("Gagal memutar audio warning/danger:", err));
+    }
+}
+
+// Putar suara pembuka saat dokumen dimuat
 document.addEventListener('DOMContentLoaded', () => {
     playRefreshSound();
 });
@@ -65,10 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function parseMarkdown(text) {
     if (!text) return '';
 
-    // 1. Ubah teks bold **kata** menjadi <strong>kata</strong>
     let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-    // 2. Ubah bullet points (• atau -) menjadi daftar HTML <ul><li>...</li></ul>
     const lines = formatted.split('\n');
     let inList = false;
     let result = '';
@@ -109,7 +115,6 @@ function appendUserMessage(text) {
 }
 
 function appendBotMessage(text, options = null, inputKey = null) {
-    // Memutar suara efek popup pesan bot
     playPopupSound();
 
     const msgDiv = document.createElement('div');
@@ -147,7 +152,6 @@ function appendBotMessage(text, options = null, inputKey = null) {
 }
 
 function appendMainMenu(message, options) {
-    // Memutar suara efek popup menu utama
     playPopupSound();
 
     const msgDiv = document.createElement('div');
@@ -371,6 +375,9 @@ function showModal(status, title, message, actions = null) {
     } else {
         modalIcon.innerHTML = `<i class="fa-solid fa-circle-xmark"></i>`;
     }
+
+    // Memutar nada dering sesuai status hasil popup (Success vs Warning/Danger)
+    playResultSound(status);
 
     document.getElementById('modalPopup').style.display = 'flex';
 }

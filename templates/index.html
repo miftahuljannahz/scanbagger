@@ -239,18 +239,19 @@
             <h3 id="modalTitle" style="margin-top: 10px; font-size: 18px; font-weight: 700; color: #0f172a;"></h3>
             <div class="modal-message" id="modalMessage" style="margin-top: 10px; font-size: 14px; color: #334155;"></div>
             <div style="margin-top: 20px; text-align: center;">
-                <button id="modalBtn" onclick="closeModal()" style="padding: 8px 24px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; background-color: #cf1818; color: white;">
+                <button id="modalBtn" onclick="closeModal()" style="padding: 8px 24px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; background-color: #0d69b9; color: white;">
                     Tutup
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- AUDIO SOUND EFFECTS -->
-    <audio id="audioRefresh" src="{{ url_for('static', filename='audio/refresh.mp3') }}" preload="auto"></audio>
-    <audio id="audioPopup" src="{{ url_for('static', filename='audio/popup.mp3') }}" preload="auto"></audio>
+<audio id="audioRefresh" src="{{ url_for('static', filename='audio/refresh.mp3') }}" preload="auto"></audio>
+<audio id="audioPopup" src="{{ url_for('static', filename='audio/popup.mp3') }}" preload="auto"></audio>
+<audio id="audioSuccess" src="{{ url_for('static', filename='audio/benar.mp3') }}" preload="auto"></audio>
+<audio id="audioWarning" src="{{ url_for('static', filename='audio/salah.mp3') }}" preload="auto"></audio>
 
-    <!-- PEMANGGILAN SCRIPT HANYA SEKALI DI SINI -->
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<!-- File JS dimuat paling bawah -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
