@@ -2,6 +2,9 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
+# Variable In-Memory untuk menyimpan jumlah pengunjung secara otomatis tanpa database
+VISITOR_COUNT = 0
+
 # Master Batasan Sesuai Regulasi BPOM & Bea Cukai
 LIMITS = {
     "kosmetik": {
@@ -53,7 +56,9 @@ AFTER_ACTION_OPTIONS = [
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    global VISITOR_COUNT
+    VISITOR_COUNT += 1
+    return render_template('index.html', total_visitors=VISITOR_COUNT)
 
 @app.route('/api/main_menu', methods=['GET'])
 def main_menu():

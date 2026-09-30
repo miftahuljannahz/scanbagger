@@ -104,29 +104,37 @@
             </div>
 
             <!-- SEKSI STATISTIK PENGUNJUNG -->
-            <div class="counter-wrapper">
-                <div style="font-family: inherit; font-size: 13px; font-weight: 600; color: #166534; background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 6px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 8px;">
-                    <span>Total Pengunjung:</span>
-                    <span id="visitor-count">1</span>
-                </div>
-
-                <script>
-                    (function() {
-                        let count = localStorage.getItem('local_visitor_count') || 100;
-                        count = parseInt(count) + 1;
-                        localStorage.setItem('local_visitor_count', count);
-                        
-                        document.getElementById('visitor-count').innerText = count.toLocaleString('id-ID');
-
-                        fetch('https://api.hitcounter.pythonanywhere.com/count/up?namespace=lartasbpom_dumai&KEY=total_visits')
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data && data.count) {
-                                    document.getElementById('visitor-count').innerText = data.count.toLocaleString('id-ID');
-                                }
-                            })
-                            .catch(() => {});
-                    })();
+<div class="counter-wrapper">
+    <div style="font-family: inherit; font-size: 13px; font-weight: 600; color: #166534; background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 6px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 8px;">
+        <span>Total Pengunjung:</span>
+        <span id="visitor-count">{{ total_visitors }}</span>
+    </div>
+</div>
+    <script>
+        (function() {
+            // API Counter Otomatis tanpa dummy & berfungsi di Localhost + Vercel
+            fetch('https://api.counterapi.dev/v1/lartas_bpom_dumai/visits/up')
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.count !== undefined) {
+                        document.getElementById('visitor-count').innerText = data.count.toLocaleString('id-ID');
+                    }
+                })
+                .catch(() => {
+                    // Fallback jika koneksi terganggu
+                    fetch('https://api.counterapi.dev/v1/lartas_bpom_dumai/visits')
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data && data.count !== undefined) {
+                                document.getElementById('visitor-count').innerText = data.count.toLocaleString('id-ID');
+                            }
+                        })
+                        .catch(() => {});
+                });
+        })();
+    </script>
+</div>
+</div>
                 </script>
             </div>
         </div> <!-- PENUTUP .info-panel -->
