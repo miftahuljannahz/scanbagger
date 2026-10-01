@@ -542,22 +542,26 @@ body {
    CSS RESPONSIF UTAMA (MOBILE & TABLET)
    ========================================== */
 
+/* ==========================================
+   CSS RESPONSIF LENGKAP UNTUK TAMPILAN HP
+   ========================================== */
+
 @media screen and (max-width: 768px) {
-    /* 1. Ubah Layout Split 2 Kolom Menjadi 1 Kolom */
+    /* 1. Layout Wrapper Menjadi 1 Kolom Vertikal */
     .main-wrapper {
         flex-direction: column !important;
-        padding: 12px !important;
+        padding: 12px 12px 80px 12px !important; /* Jarak bawah ditambah agar tidak tertutup tombol melayang */
         gap: 16px !important;
     }
 
-    /* 2. Lebarkan Elemen Panel Kiri & Chat agar Memenuhi Layar HP */
+    /* 2. Lebar Elemen Memenuhi Layar HP */
     .info-panel, 
     .chat-container {
         width: 100% !important;
         max-width: 100% !important;
     }
 
-    /* 3. Penyesuaian Ukuran Header & Judul di HP */
+    /* 3. Penyesuaian Ukuran Font & Header */
     .info-panel h1 {
         font-size: 20px !important;
         line-height: 1.3 !important;
@@ -567,42 +571,45 @@ body {
         font-size: 13px !important;
     }
 
-    /* 4. Penyesuaian Banner Bedelau & Gambar Maskot */
+    /* 4. Banner Bedelau & Maskot */
     .info-panel div[style*="linear-gradient"] {
-        flex-direction: row !important;
         padding: 10px 14px !important;
     }
 
     .info-panel img[alt="Maskot BEDELAU"] {
-        height: 75px !important;
+        height: 70px !important;
     }
 
-    /* 5. Atur Tinggi Chat Container di HP agar Nyaman */
+    /* 5. PERBAIKAN TINGGI CHATBOX (Agar Tidak Terpotong) */
     .chat-container {
-        height: 520px !important;
+        height: 420px !important; /* Dikurangi agar muat di layar HP */
+        max-height: 60vh !important;
         border-radius: 16px !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     .chat-body {
         padding: 12px !important;
+        flex: 1 !important;
+        overflow-y: auto !important;
     }
 
-    /* 6. Penyesuaian Ukuran Tombol Opsi Pilihan Chat */
-    .options-group button {
-        padding: 10px 14px !important;
-        font-size: 13px !important;
-    }
-
-    /* 7. Posisi Tombol Melayang (WhatsApp & FAQ) */
+    /* 6. PERBAIKAN TOMBOL MELAYANG (FAQ & WA) */
     .floating-container {
-        bottom: 16px !important;
-        right: 16px !important;
+        bottom: 12px !important;
+        right: 12px !important;
+        z-index: 9999 !important; /* Memastikan tombol di atas layar */
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
     }
 
     .float-btn {
-        width: 44px !important;
-        height: 44px !important;
+        width: 42px !important;
+        height: 42px !important;
         font-size: 18px !important;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important;
     }
 }
 
