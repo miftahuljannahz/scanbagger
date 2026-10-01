@@ -959,9 +959,12 @@ body {
         text-align: center;
         align-items: center;
     }
-    .features-list {
-        display: flex;
-    }
+.features-list {
+  display: flex;
+  flex-direction: column; /* Menumpuk kartu secara vertikal di HP */
+  gap: 12px;               /* Jarak antar kartu */
+  width: 100%;             /* Memastikan lebar penuh */
+}
 }
 
 @keyframes slideUp {
