@@ -1,28 +1,44 @@
+import os
 import sqlite3
 from flask import Flask, render_template, request, jsonify
+
+# Coba import upstash_redis
+try:
+    from upstash_redis import Redis
+except ImportError:
+    Redis = None
 
 app = Flask(__name__)
 
 DATABASE = 'visitor.db'
 
-def init_db():
-    """Inisialisasi tabel SQLite untuk statistik pengunjung."""
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS visitor (
-            id INTEGER PRIMARY KEY,
-            count INTEGER NOT NULL
-        )
-    ''')
-    cursor.execute('SELECT COUNT(*) FROM visitor')
-    if cursor.fetchone()[0] == 0:
-        # Nilai awal diubah dari 100 menjadi 0
-        cursor.execute('INSERT INTO visitor (id, count) VALUES (1, 0)')
-    conn.commit()
-    conn.close()
+# Inisialisasi Upstash Redis jika environment variables tersedia (di Vercel)
+redis_url = os.environ.get("KV_REST_API_URL")
+redis_token = os.environ.get("KV_REST_API_TOKEN")
 
-# Jalankan inisialisasi database
+if Redis and redis_url and redis_token:
+    redis_client = Redis(url=redis_url, token=redis_token)
+else:
+    redis_client = None
+
+def init_db():
+    """Inisialisasi tabel SQLite lokal jika Redis tidak digunakan."""
+    if redis_client is None:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS visitor (
+                id INTEGER PRIMARY KEY,
+                count INTEGER NOT NULL
+            )
+        ''')
+        cursor.execute('SELECT COUNT(*) FROM visitor')
+        if cursor.fetchone()[0] == 0:
+            cursor.execute('INSERT INTO visitor (id, count) VALUES (1, 0)')
+        conn.commit()
+        conn.close()
+
+# Jalankan inisialisasi SQLite lokal
 init_db()
 
 # Master Batasan Sesuai Regulasi BPOM & Bea Cukai
@@ -80,17 +96,30 @@ def index():
 
 @app.route('/api/visitor_count', methods=['GET'])
 def visitor_count():
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    
-    cursor.execute('SELECT count FROM visitor WHERE id = 1')
-    current_count = cursor.fetchone()[0] + 1
-    
-    cursor.execute('UPDATE visitor SET count = ? WHERE id = 1', (current_count,))
-    conn.commit()
-    conn.close()
-    
-    return jsonify({"count": current_count})
+    # 1. Jika running di Vercel (Menggunakan Upstash Redis)
+    if redis_client:
+        try:
+            current_count = redis_client.incr("visitor_count")
+            return jsonify({"count": current_count})
+        except Exception as e:
+            print("Error Redis:", e)
+            return jsonify({"count": 1})
+
+    # 2. Jika running di Localhouse/Komputer Sendiri (Menggunakan SQLite)
+    try:
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        cursor.execute('SELECT count FROM visitor WHERE id = 1')
+        row = cursor.fetchone()
+        current_count = (row[0] if row else 0) + 1
+        
+        cursor.execute('UPDATE visitor SET count = ? WHERE id = 1', (current_count,))
+        conn.commit()
+        conn.close()
+        return jsonify({"count": current_count})
+    except Exception as e:
+        print("Error SQLite:", e)
+        return jsonify({"count": 1})
 
 @app.route('/api/main_menu', methods=['GET'])
 def main_menu():
