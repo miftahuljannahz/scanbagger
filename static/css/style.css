@@ -538,15 +538,75 @@ body {
 }
 
 /* Responsif untuk Layar HP/Tablet */
-@media (max-width: 868px) {
+/* ==========================================
+   CSS RESPONSIF UTAMA (MOBILE & TABLET)
+   ========================================== */
+
+@media screen and (max-width: 768px) {
+    /* 1. Ubah Layout Split 2 Kolom Menjadi 1 Kolom */
     .main-wrapper {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: column !important;
+        padding: 12px !important;
+        gap: 16px !important;
     }
-    .info-panel, .chat-container {
-        max-width: 100%;
+
+    /* 2. Lebarkan Elemen Panel Kiri & Chat agar Memenuhi Layar HP */
+    .info-panel, 
+    .chat-container {
+        width: 100% !important;
+        max-width: 100% !important;
     }
-}.modal-icon {
+
+    /* 3. Penyesuaian Ukuran Header & Judul di HP */
+    .info-panel h1 {
+        font-size: 20px !important;
+        line-height: 1.3 !important;
+    }
+
+    .info-panel .description {
+        font-size: 13px !important;
+    }
+
+    /* 4. Penyesuaian Banner Bedelau & Gambar Maskot */
+    .info-panel div[style*="linear-gradient"] {
+        flex-direction: row !important;
+        padding: 10px 14px !important;
+    }
+
+    .info-panel img[alt="Maskot BEDELAU"] {
+        height: 75px !important;
+    }
+
+    /* 5. Atur Tinggi Chat Container di HP agar Nyaman */
+    .chat-container {
+        height: 520px !important;
+        border-radius: 16px !important;
+    }
+
+    .chat-body {
+        padding: 12px !important;
+    }
+
+    /* 6. Penyesuaian Ukuran Tombol Opsi Pilihan Chat */
+    .options-group button {
+        padding: 10px 14px !important;
+        font-size: 13px !important;
+    }
+
+    /* 7. Posisi Tombol Melayang (WhatsApp & FAQ) */
+    .floating-container {
+        bottom: 16px !important;
+        right: 16px !important;
+    }
+
+    .float-btn {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 18px !important;
+    }
+}
+
+.modal-icon {
     font-size: 48px;
     margin-bottom: 12px;
     display: flex;
