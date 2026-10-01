@@ -960,7 +960,7 @@ body {
         align-items: center;
     }
     .features-list {
-        display: none;
+        display: flex;
     }
 }
 
