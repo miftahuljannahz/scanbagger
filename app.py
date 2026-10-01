@@ -133,6 +133,32 @@ def select_drug_type():
         })
     return jsonify({"type": "error", "message": "Jenis obat tidak valid."}), 400
 
+# Simpan hitungan di server (atau bisa diganti dengan database jika ada)
+import os
+import json
+
+COUNTER_FILE = "visitor_counter.json"
+
+def get_saved_count():
+    if os.path.exists(COUNTER_FILE):
+        try:
+            with open(COUNTER_FILE, "r") as f:
+                data = json.load(f)
+                return data.get("count", 100)
+        except Exception:
+            return 100
+    return 100
+
+def save_count(count):
+    with open(COUNTER_FILE, "w") as f:
+        json.dump({"count": count}, f)
+
+@app.route('/api/visitor_count', methods=['GET'])
+def visitor_count():
+    current_count = get_saved_count() + 1
+    save_count(current_count)
+    return jsonify({"count": current_count})
+
 @app.route('/api/validate_input', methods=['POST'])
 def validate_input():
     data = request.get_json(silent=True) or {}
