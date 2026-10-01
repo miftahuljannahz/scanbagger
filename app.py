@@ -1,6 +1,29 @@
+import sqlite3
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
+
+DATABASE = 'visitor.db'
+
+def init_db():
+    """Inisialisasi tabel SQLite untuk statistik pengunjung."""
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS visitor (
+            id INTEGER PRIMARY KEY,
+            count INTEGER NOT NULL
+        )
+    ''')
+    cursor.execute('SELECT COUNT(*) FROM visitor')
+    if cursor.fetchone()[0] == 0:
+        # Nilai awal diubah dari 100 menjadi 0
+        cursor.execute('INSERT INTO visitor (id, count) VALUES (1, 0)')
+    conn.commit()
+    conn.close()
+
+# Jalankan inisialisasi database
+init_db()
 
 # Master Batasan Sesuai Regulasi BPOM & Bea Cukai
 LIMITS = {
@@ -55,6 +78,20 @@ AFTER_ACTION_OPTIONS = [
 def index():
     return render_template('index.html')
 
+@app.route('/api/visitor_count', methods=['GET'])
+def visitor_count():
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    
+    cursor.execute('SELECT count FROM visitor WHERE id = 1')
+    current_count = cursor.fetchone()[0] + 1
+    
+    cursor.execute('UPDATE visitor SET count = ? WHERE id = 1', (current_count,))
+    conn.commit()
+    conn.close()
+    
+    return jsonify({"count": current_count})
+
 @app.route('/api/main_menu', methods=['GET'])
 def main_menu():
     return jsonify({
@@ -65,7 +102,6 @@ def main_menu():
 
 @app.route('/api/select_category', methods=['POST'])
 def select_category():
-    # Menggunakan get_json(silent=True) agar tidak mengembalikan 400 Bad Request jika JSON None
     data = request.get_json(silent=True) or {}
     cat = data.get('category')
 
@@ -132,32 +168,6 @@ def select_drug_type():
             "message": f"Masukkan jumlah **{item['name']}** yang Anda bawa (dalam {item['unit']}):"
         })
     return jsonify({"type": "error", "message": "Jenis obat tidak valid."}), 400
-
-# Simpan hitungan di server (atau bisa diganti dengan database jika ada)
-import os
-import json
-
-COUNTER_FILE = "visitor_counter.json"
-
-def get_saved_count():
-    if os.path.exists(COUNTER_FILE):
-        try:
-            with open(COUNTER_FILE, "r") as f:
-                data = json.load(f)
-                return data.get("count", 100)
-        except Exception:
-            return 100
-    return 100
-
-def save_count(count):
-    with open(COUNTER_FILE, "w") as f:
-        json.dump({"count": count}, f)
-
-@app.route('/api/visitor_count', methods=['GET'])
-def visitor_count():
-    current_count = get_saved_count() + 1
-    save_count(current_count)
-    return jsonify({"count": current_count})
 
 @app.route('/api/validate_input', methods=['POST'])
 def validate_input():

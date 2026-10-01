@@ -104,31 +104,28 @@
             </div>
 
             <!-- SEKSI STATISTIK PENGUNJUNG -->
-<!-- SEKSI STATISTIK PENGUNJUNG -->
-<!-- SEKSI STATISTIK PENGUNJUNG -->
-<div class="counter-wrapper">
-    <div style="font-family: inherit; font-size: 13px; font-weight: 600; color: #166534; background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 6px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 8px;">
-        <span>Total Pengunjung:</span>
-        <span id="visitor-count">...</span>
-    </div>
+            <div class="counter-wrapper">
+                <div style="font-family: inherit; font-size: 13px; font-weight: 600; color: #166534; background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 6px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 8px;">
+                    <span>Total Pengunjung:</span>
+                    <span id="visitor-count">...</span>
+                </div>
 
-    <script>
-        (function() {
-            // Panggil API internal Flask
-            fetch('/api/visitor_count')
-                .then(res => res.json())
-                .then(data => {
-                    if (data && data.count) {
-                        document.getElementById('visitor-count').innerText = data.count.toLocaleString('id-ID');
-                    }
-                })
-                .catch(err => {
-                    console.error("Gagal mengambil data pengunjung:", err);
-                    document.getElementById('visitor-count').innerText = "100";
-                });
-        })();
-    </script>
-</div>
+                <script>
+                    (function() {
+                        fetch('/api/visitor_count')
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data && data.count) {
+                                    document.getElementById('visitor-count').innerText = data.count.toLocaleString('id-ID');
+                                }
+                            })
+                            .catch(err => {
+                                console.error("Gagal mengambil data dari DB:", err);
+                                document.getElementById('visitor-count').innerText = "-";
+                            });
+                    })();
+                </script>
+            </div>
         </div> <!-- PENUTUP .info-panel -->
 
         <!-- SEKSI KANAN: Chat Assistant Card -->
